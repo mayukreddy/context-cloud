@@ -17,17 +17,26 @@ A privacy-first Chrome extension that quietly remembers any text you copy or hig
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/context-cloud.git
+   git clone https://github.com/mayukreddy/context-cloud.git
    cd context-cloud
    ```
 
-2. Open Chrome/Edge and navigate to `chrome://extensions/`
+2. **Configure your OpenAI API key:**
+   ```bash
+   cp config.example.js config.js
+   ```
+   Then edit `config.js` and add your OpenAI API key:
+   ```javascript
+   OPENAI_API_KEY: 'your-api-key-here'
+   ```
 
-3. Enable "Developer mode" in the top right
+3. Open Chrome/Edge and navigate to `chrome://extensions/`
 
-4. Click "Load unpacked" and select the `context-cloud` folder
+4. Enable "Developer mode" in the top right
 
-5. The extension should now appear in your extensions list
+5. Click "Load unpacked" and select the `context-cloud` folder
+
+6. The extension should now appear in your extensions list
 
 ### From Chrome Web Store (Coming Soon)
 
@@ -67,6 +76,7 @@ The extension will be available on the Chrome Web Store once published.
 - All snippets are encrypted using AES-GCM before storage
 - No data is sent to external servers (except for optional embedding generation)
 - Local storage only - your data stays on your device
+- API keys are kept local and not committed to version control
 
 ## Development
 
@@ -81,7 +91,8 @@ context-cloud/
 ├── popup.js              # Popup logic
 ├── storage.js            # Database operations
 ├── embeddings.js         # Vector search
-├── config.js             # Configuration
+├── config.example.js     # Example configuration
+├── config.js             # Your configuration (not in git)
 ├── dexie.min.js          # IndexedDB wrapper
 └── icons/                # Extension icons
 ```
@@ -139,7 +150,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 If you encounter any issues or have questions:
-1. Check the [Issues](https://github.com/yourusername/context-cloud/issues) page
+1. Check the [Issues](https://github.com/mayukreddy/context-cloud/issues) page
 2. Create a new issue with detailed information
 3. Include browser version and extension version
 
