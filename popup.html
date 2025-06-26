@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Context Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #181c24;
+      color: #f3f6fa;
+      width: 340px;
+      min-height: 480px;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 22px 0 10px 0;
+      border-bottom: 1px solid #232837;
+      background: #232837;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      gap: 14px;
+    }
+    .header-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: none;
+      box-shadow: none;
+      object-fit: cover;
+      margin-right: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .header-title {
+      font-size: 1.35em;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #f3f6fa;
+      text-shadow: 0 2px 8px rgba(79,140,255,0.08);
+    }
+    .header-tagline {
+      text-align: center;
+      font-size: 1.04em;
+      color: #b0b8c1;
+      margin: 6px 0 0 0;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      background: none;
+      padding-bottom: 2px;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.10);
+    }
+    .actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 0 20px;
+    }
+    .toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 38px;
+      height: 22px;
+      display: inline-block;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: #353b4b;
+      border-radius: 22px;
+      transition: background 0.2s;
+    }
+    .toggle-switch input:checked + .slider {
+      background: #4f8cff;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 4px rgba(79,140,255,0.10);
+    }
+    .toggle-switch input:checked + .slider:before {
+      transform: translateX(16px);
+    }
+    .erase-btn {
+      background: none;
+      color: #4f8cff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 14px;
+      font-size: 0.97em;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      font-weight: 600;
+    }
+    .erase-btn:hover {
+      background: #232837;
+      color: #fff;
+    }
+    .search-bar-wrapper {
+      position: relative;
+      margin: 22px 0 0 0;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .search-bar {
+      width: 90%;
+      padding: 9px 12px 9px 36px;
+      border: 1.5px solid #232837;
+      border-radius: 7px;
+      font-size: 1em;
+      background: #232837;
+      color: #f3f6fa;
+      outline: none;
+      transition: border 0.2s;
+      box-shadow: 0 1px 4px rgba(79,140,255,0.03);
+    }
+    .search-bar:focus {
+      border: 1.5px solid #4f8cff;
+    }
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1em;
+      color: #6a7a8c;
+      pointer-events: none;
+    }
+    .snippets-list {
+      margin: 18px 0 0 0;
+      padding: 0 20px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .snippet-card {
+      background: #232837;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(79,140,255,0.07);
+      margin-bottom: 16px;
+      padding: 14px 16px 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      position: relative;
+      transition: box-shadow 0.2s, transform 0.15s;
+      border: 1.5px solid #353b4b;
+    }
+    .snippet-card:hover {
+      box-shadow: 0 6px 24px rgba(79,140,255,0.13);
+      transform: translateY(-2px) scale(1.012);
+      border: 1.5px solid #4f8cff;
+    }
+    .snippet-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85em;
+      color: #b0b8c1;
+    }
+    .snippet-source {
+      font-weight: 600;
+      color: #4f8cff;
+      font-size: 0.93em;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .snippet-favicon {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      margin-right: 2px;
+      vertical-align: middle;
+      background: #e3e7ee;
+      object-fit: cover;
+    }
+    .snippet-text {
+      font-size: 1.07em;
+      color: #f3f6fa;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 4.5em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      line-height: 1.5;
+      transition: background 0.15s;
+      border-radius: 6px;
+      padding: 2px 0;
+    }
+    .snippet-text:hover {
+      background: #353b4b;
+    }
+    .snippet-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 2px;
+    }
+    .snippet-action-btn {
+      background: none;
+      border: none;
+      color: #b0b8c1;
+      font-size: 1.18em;
+      cursor: pointer;
+      padding: 2px 7px;
+      border-radius: 5px;
+      transition: background 0.15s, color 0.15s;
+      display: flex;
+      align-items: center;
+    }
+    .snippet-action-btn:hover {
+      background: #353b4b;
+      color: #4f8cff;
+    }
+    .empty-state {
+      text-align: center;
+      color: #6a7a8c;
+      margin: 48px 0 0 0;
+      font-size: 1.13em;
+      letter-spacing: 0.01em;
+    }
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px 18px 20px;
+      border-top: 1px solid #232837;
+      background: #232837;
+      border-radius: 0 0 16px 16px;
+      font-size: 1.01em;
+      color: #b0b8c1;
+      margin-top: 14px;
+    }
+    .footer .hotkey {
+      font-weight: 600;
+      color: #4f8cff;
+      background: #232837;
+      border-radius: 5px;
+      padding: 2px 10px;
+      margin-left: 4px;
+      font-size: 1.01em;
+      letter-spacing: 0.01em;
+      border: 1px solid #353b4b;
+    }
+    .footer .settings {
+      cursor: pointer;
+      font-size: 1.3em;
+      color: #b0b8c1;
+      transition: color 0.2s;
+    }
+    .footer .settings:hover {
+      color: #4f8cff;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span class="header-logo" style="display:flex;align-items:center;justify-content:center;">
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="cloudGradient" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#4f8cff"/>
+            <stop offset="1" stop-color="#a0c4ff"/>
+          </linearGradient>
+        </defs>
+        <path d="M28.5 28H11C7.686 28 5 25.314 5 22C5 18.686 7.686 16 11 16C11.312 16 11.619 16.021 11.922 16.062C13.09 12.613 16.26 10 20 10C24.418 10 28 13.134 28 17.5C28 17.668 27.995 17.835 27.985 18.001C31.053 18.165 33.5 20.393 33.5 23C33.5 25.607 31.053 28 28.5 28Z" fill="url(#cloudGradient)" stroke="#f3f6fa" stroke-width="1.5"/>
+      </svg>
+    </span>
+    <span class="header-title">Context Cloud</span>
+  </div>
+  <div class="header-tagline">Your context, always at hand.</div>
+  <div class="actions">
+    <div class="toggle">
+      <label class="toggle-switch">
+        <input type="checkbox" id="enable-capture" />
+        <span class="slider"></span>
+      </label>
+      <span style="font-size:1.05em;font-weight:500;">Enable Capture</span>
+    </div>
+    <button class="erase-btn" id="erase-memory">Erase All</button>
+  </div>
+  <div class="search-bar-wrapper">
+    <input class="search-bar" id="search-bar" type="text" placeholder="Search snippets..." />
+    <span class="search-icon">🔍</span>
+  </div>
+  <div class="snippets-list" id="snippets-list"></div>
+  <div class="empty-state" id="empty-state" style="display:none;">No snippets yet!<br>Highlight or copy text to get started.</div>
+  <div class="footer">
+    <span>Hotkey:<span class="hotkey">Ctrl+Shift+.</span></span>
+    <span class="settings" title="Settings">&#9881;</span>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html> 
